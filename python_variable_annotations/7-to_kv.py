@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-
-'''Complex types - string and int/float to tuple.
+'''Task 7
 '''
-from typing import List, Union, Tuple
+from typing import Union, Tuple
 
 
-def to_kv(k: str, v: Union[int, float]) -> Tuple[str, float]:  # or (int | float)) -> float:
-    '''Return a tuple of a string and a float.
+def to_kv(k: str, v: Union[int, float]) -> Tuple[str, float]:
+    '''Converts a key and its value to a tuple of the key and
+    the square of its value.
     '''
-    return (k, float( v**2))
+    return (k, float(v**2))
