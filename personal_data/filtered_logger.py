@@ -7,13 +7,11 @@
 import logging
 import re
 import os
-import mysql.connector # type: ignore
+import mysql.connector  # type: ignore
 from typing import List
 
 
-
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
-
 
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
@@ -41,7 +39,8 @@ def get_logger() -> logging.Logger:
 
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
-        """
+    """
+
 
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
@@ -59,14 +58,16 @@ class RedactingFormatter(logging.Formatter):
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
     '''Establish a connection to the database and return a connection object.'''
+
+
     user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
     password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
     host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
     database = os.getenv("PERSONAL_DATA_DB_NAME")
-    
+
     if database is None:
-        raise ValueError("Database name must be set in PERSONAL_DATA_DB_NAME environment variable")
-    
+        raise ValueError("Database name must be in environment variable")
+
     return mysql.connector.connect(
         user=user,
         password=password,
@@ -76,6 +77,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 def main() -> None:
     ''' main function'''
+
     logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
                         level=logging.INFO)
