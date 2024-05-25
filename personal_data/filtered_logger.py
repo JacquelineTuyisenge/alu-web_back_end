@@ -6,6 +6,8 @@
 
 import logging
 import re
+import os
+import mysql.connector # type: ignore
 from typing import List
 
 
@@ -38,3 +40,38 @@ class RedactingFormatter(logging.Formatter):
         ''' Formatting function'''
         return filter_datum(self.fields, self.REDACTION,
                             super().format(record), self.SEPARATOR)
+
+def get_db () -> mysql.connector.connection.MySQLConnection:
+    '''establish a connection to the database and return a connection object'''
+    return mysql.connector.connect(
+        user = 'root',
+        password = 'root',
+        host = 'localhost',
+        database = 'my_db'
+    )
+
+def main() -> None:
+    ''' main function'''
+    logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        level=logging.INFO)
+    logger = logging.getLogger('user_data')
+
+    fields = ['name', 'email', 'phone', 'ssn', 'password']
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT name, email, phone, ssn, password, ip, last_login, user_agent FROM users")
+    rows = cursor.fetchall()
+
+    for row in rows:
+        message = f"name={row[0]}; email={row[1]}; phone={row[2]}; ssn={row[3]}; password={row[4]}; ip={row[5]}; last_login={row[6]}; user_agent={row[7]}"
+        filtered_message = filter_datum(fields, '***', message, '; ')
+        logger.info(filtered_message)
+
+    cursor.close()
+    db.close()
+
+if __name__ == "__main__":
+    main()
