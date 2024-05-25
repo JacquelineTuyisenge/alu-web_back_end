@@ -11,6 +11,10 @@ import mysql.connector # type: ignore
 from typing import List
 
 
+
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     '''should use a regex to replace occurrences of certain field values..
