@@ -15,8 +15,10 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
+
     '''should use a regex to replace occurrences of certain field values..
     '''
+
     pattern = '|'.join([f'{field}=[^{separator}]*' for field in fields])
     return re.sub(
         pattern,
@@ -37,7 +39,9 @@ def get_logger() -> logging.Logger:
     logger.addHandler(handler)
     return logger
 
+
 class RedactingFormatter(logging.Formatter):
+
     """ Redacting Formatter class
     """
 
