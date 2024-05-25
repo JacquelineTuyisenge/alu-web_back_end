@@ -16,6 +16,7 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
 
+
     '''should use a regex to replace occurrences of certain field values..
     '''
 
@@ -45,7 +46,6 @@ class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
     """
 
-
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
@@ -61,7 +61,11 @@ class RedactingFormatter(logging.Formatter):
                             super().format(record), self.SEPARATOR)
 
 def get_db() -> mysql.connector.connection.MySQLConnection:
-    '''Establish a connection to the database and return a connection object.'''
+
+
+    '''Establish a connection to the database 
+    and return a connection object.
+    '''
 
     user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
     password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
@@ -78,9 +82,12 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         database=database
     )
 def main() -> None:
+
+
     ''' main function'''
 
-    logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s',
+    logging.basicConfig(
+        format='%(asctime)s %(name)s %(levelname)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
                         level=logging.INFO)
     logger = logging.getLogger('user_data')
@@ -93,13 +100,16 @@ def main() -> None:
     rows = cursor.fetchall()
 
     for row in rows:
-        message = f"name={row[0]}; email={row[1]}; phone={row[2]}; ssn={row[3]}; password={row[4]}; ip={row[5]}; last_login={row[6]}; user_agent={row[7]}"
+        message = f"name={row[0]};
+          email={row[1]}; phone={row[2]}; ssn={row[3]};
+            password={row[4]}; ip={row[5]}; last_login={row[6]};
+              user_agent={row[7]}"
         filtered_message = filter_datum(fields, '***', message, '; ')
         logger.info(filtered_message)
-
 
     cursor.close()
     db.close()
 
 if __name__ == "__main__":
     main()
+
