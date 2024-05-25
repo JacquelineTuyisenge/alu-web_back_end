@@ -57,13 +57,21 @@ class RedactingFormatter(logging.Formatter):
         return filter_datum(self.fields, self.REDACTION,
                             super().format(record), self.SEPARATOR)
 
-def get_db () -> mysql.connector.connection.MySQLConnection:
-    '''establish a connection to the database and return a connection object'''
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    '''Establish a connection to the database and return a connection object.'''
+    user = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    database = os.getenv("PERSONAL_DATA_DB_NAME")
+    
+    if database is None:
+        raise ValueError("Database name must be set in PERSONAL_DATA_DB_NAME environment variable")
+    
     return mysql.connector.connect(
-        user = 'root',
-        password = 'root',
-        host = 'localhost',
-        database = 'my_db'
+        user=user,
+        password=password,
+        host=host,
+        database=database
     )
 
 def main() -> None:
