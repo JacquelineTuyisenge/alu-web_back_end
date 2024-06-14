@@ -31,7 +31,6 @@ class TestGithubOrgClient(unittest.TestCase):
         '''Test _public_repos_url property'''
         expected_repos_url = "https://api.github.com/orgs/testorg/repos"
 
-        # Mock the org property to return a known payload
         with patch.object(GithubOrgClient,
                           'org', new_callable=PropertyMock) as mock_org:
             mock_org.return_value = {"repos_url": expected_repos_url}
@@ -48,7 +47,6 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
         '''Test GithubOrgClient.public_repos'''
 
-        # Define the mocked payload and expected result
         mocked_payload = [{"name": "repo1",
                            "license": {"key": "mit"}},
                           {"name": "repo2"}]
@@ -56,22 +54,32 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_public_repos_url.return_value = \
             "https://api.github.com/orgs/testorg/repos"
 
-        # Instantiate the client
         client = GithubOrgClient("testorg")
 
-        # Call the method under test
         result = client.public_repos()
 
-        # Define the expected result based on the mocked payload
         expected_repos = ["repo1", "repo2"]
 
-        # Assert that the returned result matches the expected repos
         self.assertEqual(result, expected_repos)
 
-        # Assert that get_json and _public_repos_url were called exactly once
         mock_get_json.assert_called_once()
         mock_public_repos_url.assert_called_once()
 
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+    ])
+    @patch('client.access_nested_map')
+    def test_has_license(self, repo, license_key, expected_result, mock_access_nested_map):
+        '''Test GithubOrgClient.has_license'''
+
+        mock_access_nested_map.return_value = repo.get('license', {}).get('key')
+
+        client = GithubOrgClient("testorg")
+
+        result = client.has_license(repo, license_key)
+
+        self.assertEqual(result, expected_result)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
