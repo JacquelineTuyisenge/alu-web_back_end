@@ -7,9 +7,9 @@ from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
+
 class TestGithubOrgClient(unittest.TestCase):
     '''Tests for GithubOrgClient'''
-
 
     @parameterized.expand([
         ("google", {"login": "google"}),
