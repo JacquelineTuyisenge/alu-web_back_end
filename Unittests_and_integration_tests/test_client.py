@@ -114,7 +114,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         # Mock requests.get().json() to return the specified payloads
         cls.mock_get.side_effect = \
             lambda url: MockResponse(repos_payload) if url == cls.org_payload['repos_url']\
-                else MockResponse([])
+else MockResponse([])
 
     @classmethod
     def tearDownClass(cls):
