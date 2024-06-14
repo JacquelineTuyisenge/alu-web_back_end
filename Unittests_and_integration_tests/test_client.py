@@ -84,11 +84,14 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 class MockResponse:
+    '''mock response'''
     def __init__(self, json_data, status_code=200):
+        '''mock response'''
         self.json_data = json_data
         self.status_code = status_code
 
     def json(self):
+        '''mock json'''
         return self.json_data
 
 
@@ -99,8 +102,10 @@ class MockResponse:
     ],
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
+    ''''Tests for GithubOrgClient'''
     @classmethod
     def setUpClass(cls):
+        '''setup class'''
         cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
 
@@ -109,19 +114,23 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        '''teardown class'''
         cls.get_patcher.stop()
 
     def test_public_repos(self):
+        '''Test GithubOrgClient.public_repos'''
         client = GithubOrgClient("testorg")
         result = client.public_repos()
         self.assertEqual(result, self.expected_repos)
 
     def test_has_license_apache2(self):
+        '''test GithubOrgClient.has_license'''
         client = GithubOrgClient("testorg")
         result = client.has_license("apache-2.0")
         self.assertEqual(result, self.apache2_repos)
 
     def test_public_repos_with_license(self):
+        '''test GithubOrgClient.public_repos_with_license'''
         client = GithubOrgClient("testorg")
         result = client.public_repos(license="apache-2.0")
         self.assertEqual(result, self.apache2_repos)
