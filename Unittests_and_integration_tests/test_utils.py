@@ -31,6 +31,7 @@ class TestAccessNestedMap(unittest.TestCase):
         # Verify the exception message is as expected
         self.assertEqual(str(cm.exception), f"'{path[-1]}'")
 
+
 class TestGetJson(unittest.TestCase):
     '''testing get_json'''
 
@@ -51,6 +52,7 @@ class TestGetJson(unittest.TestCase):
             mock_get.assert_called_once_with(test_url)
             # Assert the response is the expected payload
             self.assertEqual(response, test_payload)
+
 
 class TestClass:
     '''Class for testing memoize decorator'''
