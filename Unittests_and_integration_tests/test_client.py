@@ -71,10 +71,12 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
     @patch('client.access_nested_map')
-    def test_has_license(self, repo, license_key, expected_result, mock_access_nested_map):
+    def test_has_license(self, repo, license_key,
+                         expected_result, mock_access_nested_map):
         '''Test GithubOrgClient.has_license'''
 
-        mock_access_nested_map.return_value = repo.get('license', {}).get('key')
+        mock_access_nested_map.return_value = (
+            repo.get('license', {}).get('key'))
 
         client = GithubOrgClient("testorg")
 
@@ -110,7 +112,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.mock_get = cls.get_patcher.start()
 
         # Mock requests.get().json() to return the specified payloads
-        cls.mock_get.side_effect = lambda url: MockResponse(repos_payload) if url == cls.org_payload['repos_url'] else MockResponse([])
+        cls.mock_get.side_effect = \
+            lambda url: MockResponse(repos_payload) if url == cls.org_payload['repos_url']\
+                else MockResponse([])
 
     @classmethod
     def tearDownClass(cls):
@@ -134,6 +138,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient("testorg")
         result = client.public_repos(license="apache-2.0")
         self.assertEqual(result, self.apache2_repos)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
