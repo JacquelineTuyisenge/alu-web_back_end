@@ -948,3 +948,19 @@ TEST_PAYLOAD = [
     ['dagger', 'kratu', 'traceur-compiler', 'firmata.py'],
   )
 ]
+
+
+def expected_repos():
+  return None
+
+
+def repos_payload():
+  return None
+
+
+def org_payload():
+  return None
+
+
+def apache2_repos():
+  return None
