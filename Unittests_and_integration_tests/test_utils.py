@@ -5,7 +5,7 @@
 import unittest
 from unittest.mock import patch, Mock
 from parameterized import parameterized
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -51,6 +51,35 @@ class TestGetJson(unittest.TestCase):
             mock_get.assert_called_once_with(test_url)
             # Assert the response is the expected payload
             self.assertEqual(response, test_payload)
+
+class TestClass:
+    '''Class for testing memoize decorator'''
+
+    def a_method(self):
+        '''A simple method returning 42'''
+        return 42
+
+    @memoize
+    def a_property(self):
+        '''A property decorated with memoize to call a_method'''
+        return self.a_method()
+
+
+class TestMemoize(unittest.TestCase):
+    '''Test case for memoize decorator'''
+
+    @patch.object(TestClass, 'a_method', return_value=42)
+    def test_memoize(self, mock_a_method):
+        '''Test that a_property calls a_method only once'''
+        test_obj = TestClass()
+
+        result1 = test_obj.a_property
+        result2 = test_obj.a_property
+
+        self.assertEqual(result1, 42)
+        self.assertEqual(result2, 42)
+
+        mock_a_method.assert_called_once()
 
 if __name__ == '__main__':
     unittest.main()
