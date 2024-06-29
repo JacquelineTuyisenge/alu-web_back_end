@@ -1,0 +1,1 @@
+Redme file for i18n project
