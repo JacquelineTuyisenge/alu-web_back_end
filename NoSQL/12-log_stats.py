@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 '''Task 12: Log stats
 '''
-from pymongo import MongoClient
+from pymongo import MongoClient # type: ignore
 
 
 def print_nginx_request_logs(nginx_collection):
