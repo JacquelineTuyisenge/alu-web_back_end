@@ -1,4 +1,4 @@
-import app from '../full_Server/server';
+import app from '../full_server/server';
 import { use, request, expect } from 'chai';
 import chaiHttp from 'chai-http';
 process.argv[2] = './database.csv';
