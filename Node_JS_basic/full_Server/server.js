@@ -1,6 +1,6 @@
 /* eslint-disable */
 import express from 'express';
-import controllerRouting from './routers/index';
+import controllerRouting from './routes/index';
 
 const app = express();
 const port = 1245;
