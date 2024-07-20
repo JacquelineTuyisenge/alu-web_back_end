@@ -5,7 +5,6 @@ class StudentsController {
     readDatabase(DATABASE)
       .then((fields) => {
         const students = [];
-        // let count = 0;
         let msg;
         students.push('This is the list of our students');
 
